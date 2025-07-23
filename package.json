@@ -1,0 +1,40 @@
+{
+    "name": "guardiao-admin",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc --noEmit && vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@bhplugin/vue3-datatable": "^2.0.0",
+        "@headlessui/vue": "^1.7.23",
+        "@vueuse/head": "^2.0.0",
+        "firebase": "^11.3.1",
+        "maska": "^3.0.3",
+        "pinia": "^2.0.22",
+        "sweetalert2": "^11.17.2",
+        "uuid": "^11.1.0",
+        "vue": "^3.2.37",
+        "vue-height-collapsible": "^0.1.1",
+        "vue-i18n": "^9.2.2",
+        "vue-router": "^4.1.5",
+        "vue3-perfect-scrollbar": "^2.0.0",
+        "vue3-popper": "^1.5.0"
+    },
+    "devDependencies": {
+        "@intlify/unplugin-vue-i18n": "^4.0.0",
+        "@rollup/plugin-alias": "^5.1.0",
+        "@tailwindcss/forms": "^0.5.3",
+        "@tailwindcss/typography": "^0.5.7",
+        "@vitejs/plugin-vue": "^5.1.2",
+        "autoprefixer": "^10.4.17",
+        "postcss": "^8.4.35",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5.5.4",
+        "vite": "^5.4.1",
+        "vue-tsc": "^2.0.29"
+    }
+}
