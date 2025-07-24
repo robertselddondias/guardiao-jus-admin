@@ -13,6 +13,35 @@ const routes: RouteRecordRaw[] = [
     { path: '/company/add', name: 'companyAdd', component: EmpresaAddView, meta: { requiresAuth: true } },
     { path: '/company/:id', name: 'companyEdit', component: EmpresaAddView, meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: LoginView, meta: { layout: 'auth' } },
+    {
+        path: '/customers',
+        children: [
+            {
+                path: '',
+                name: 'customers-list',
+                component: () => import('@/views/customer/CustomerListView.vue'),
+                meta: { title: 'Lista de Clientes', requiresAuth: true },
+            },
+            // {
+            //     path: 'add',
+            //     name: 'customers-add',
+            //     component: () => import('@/views/customer/CustomerAddView.vue'),
+            //     meta: { title: 'Adicionar Cliente', requiresAuth: true },
+            // },
+            // {
+            //     path: 'edit/:id',
+            //     name: 'customers-edit',
+            //     component: () => import('@/views/customer/CustomerEditView.vue'),
+            //     meta: { title: 'Editar Cliente', requiresAuth: true },
+            // },
+            {
+                path: 'view/:id',
+                name: 'customers-view',
+                component: () => import('@/views/customer/CustomerViewView.vue'),
+                meta: { title: 'Visualizar Cliente', requiresAuth: true },
+            }
+        ]
+    }
 ];
 
 

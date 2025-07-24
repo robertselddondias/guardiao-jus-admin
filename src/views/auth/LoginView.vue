@@ -71,19 +71,13 @@
     </div>
 </template>
 <script lang="ts" setup>
-    import { computed, onMounted, reactive, ref } from 'vue';
-    import { useI18n } from 'vue-i18n';
-    import appSetting from '@/app-setting';
-    import { useAppStore } from '@/stores';
+    import { onMounted, ref } from 'vue';
     import { useMeta } from '@/composables/use-meta';
     import IconMail from '@/components/icon/icon-mail.vue';
     import IconLockDots from '@/components/icon/icon-lock-dots.vue';
 
     import Swal from 'sweetalert2';
     import { useRouter } from 'vue-router';
-    import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-    import User_service from '@/services/UserService';
-    import UserService from '@/services/UserService';
     import AuthService from '@/services/AuthService';
 
     useMeta({ title: 'Login Cover' });

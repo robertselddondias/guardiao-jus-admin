@@ -1,5 +1,5 @@
 import BeneficioType from '@/enums/BeneficioType';
-import { BankModel } from '@/models/bank_model';
+import { BankModel } from '@/models/BankModel';
 
 export class CompanyModel {
     id?: string;

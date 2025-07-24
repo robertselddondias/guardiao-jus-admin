@@ -178,7 +178,7 @@
                                     <div class="mb-5">
                                         <h5 class="font-semibold text-lg mb-4">Histórico de Pagamentos</h5>
                                         <p>
-                                            As alterações nas informações do seu <span class="text-primary">Método de Pagamento</span> entrarão em vigor a partir do pagamento agendado e serão refletidas na sua próxima fatura..
+                                            As alterações nas informações do seu <span class="text-primary">Método de Pagamento</span> realizado ao prestador de serviço.
                                         </p>
                                     </div>
                                     <div class="mb-5">
@@ -393,8 +393,8 @@
     import companyService from '@/services/CompanyService';
     import BeneficioType from '@/enums/BeneficioType';
     import { useRoute } from 'vue-router';
-    import { CompanyModel } from '@/models/company_model';
-    import { BankModel } from '@/models/bank_model';
+    import { CompanyModel } from '@/models/CompanyModel';
+    import { BankModel } from '@/models/BankModel';
 
     const unmaskedValue = ref('');
     const maskedValue = ref('');

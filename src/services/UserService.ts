@@ -1,6 +1,6 @@
 // src/services/UserService.ts
 import { deleteDoc, doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
-import { UserModel } from '@/models/user_model';
+import { UserModel } from '@/models/UserModel';
 
 const db = getFirestore();
 

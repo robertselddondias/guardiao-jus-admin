@@ -1,6 +1,16 @@
-import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import { CompanyModel } from '@/models/company_model'; // O modelo CompanyModel
-import { getAuth } from 'firebase/auth';
+import {
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    getFirestore,
+    query,
+    setDoc,
+    updateDoc,
+    where
+} from 'firebase/firestore';
+import { CompanyModel } from '@/models/CompanyModel'; // O modelo CompanyModel
 
 const db = getFirestore();
 

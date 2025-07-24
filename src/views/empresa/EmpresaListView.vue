@@ -77,9 +77,9 @@
 </template>
 
 <script lang="ts" setup>
-    import { ref, onMounted } from 'vue';
+    import { onMounted, ref } from 'vue';
     import CompanyService from '@/services/CompanyService';
-    import { CompanyModel } from '@/models/company_model';
+    import { CompanyModel } from '@/models/CompanyModel';
     import Vue3Datatable from '@bhplugin/vue3-datatable';
 
     import IconTrashLines from '@/components/icon/icon-trash-lines.vue';

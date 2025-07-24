@@ -10,7 +10,7 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useAppStore } from '@/stores';
-import { UserModel } from '@/models/user_model'; // Importação necessária para o Firestore
+import { UserModel } from '@/models/UserModel'; // Importação necessária para o Firestore
 
 // Definindo a interface para um usuário
 export interface IUser {

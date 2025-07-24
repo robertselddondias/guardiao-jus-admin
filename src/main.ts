@@ -18,6 +18,7 @@ import appSetting from '@/app-setting';
 import i18n from '@/i18n';
 // popper
 import Popper from 'vue3-popper';
+import { vMaska } from 'maska/vue';
 
 const app = createApp(App);
 
@@ -38,7 +39,6 @@ app.config.globalProperties.$firebase = firebaseApp;
 
 app.use(i18n);
 
-import { vMaska } from 'maska/vue';
 app.directive('maska', vMaska);
 
 app.component('Popper', Popper);

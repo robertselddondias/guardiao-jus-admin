@@ -61,16 +61,16 @@
                                         <div class="flex items-center">
                                             <icon-menu-apps  class="group-hover:!text-primary shrink-0" />
 
-                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Empresas</span>
+                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Escritórios</span>
                                         </div>
                                     </router-link>
                                 </li>
                                 <li class="nav-item">
-                                    <router-link to="/apps/mailbox" class="group" @click="toggleMobileMenu">
+                                    <router-link to="/customers" class="group" @click="toggleMobileMenu">
                                         <div class="flex items-center">
                                             <icon-menu-users class="group-hover:!text-primary shrink-0" />
 
-                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Usuários</span>
+                                            <span class="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">Clientes</span>
                                         </div>
                                     </router-link>
                                 </li>
@@ -127,28 +127,11 @@
     import IconCaretsDown from '@/components/icon/icon-carets-down.vue';
     import IconMenuDashboard from '@/components/icon/menu/icon-menu-dashboard.vue';
     import IconMinus from '@/components/icon/icon-minus.vue';
-    import IconMenuChat from '@/components/icon/menu/icon-menu-chat.vue';
     import IconMenuMailbox from '@/components/icon/menu/icon-menu-mailbox.vue';
-    import IconMenuTodo from '@/components/icon/menu/icon-menu-todo.vue';
-    import IconMenuNotes from '@/components/icon/menu/icon-menu-notes.vue';
-    import IconMenuScrumboard from '@/components/icon/menu/icon-menu-scrumboard.vue';
-    import IconMenuContacts from '@/components/icon/menu/icon-menu-contacts.vue';
     import IconMenuInvoice from '@/components/icon/menu/icon-menu-invoice.vue';
     import IconCaretDown from '@/components/icon/icon-caret-down.vue';
-    import IconMenuCalendar from '@/components/icon/menu/icon-menu-calendar.vue';
-    import IconMenuComponents from '@/components/icon/menu/icon-menu-components.vue';
-    import IconMenuElements from '@/components/icon/menu/icon-menu-elements.vue';
-    import IconMenuCharts from '@/components/icon/menu/icon-menu-charts.vue';
     import IconMenuWidgets from '@/components/icon/menu/icon-menu-widgets.vue';
-    import IconMenuFontIcons from '@/components/icon/menu/icon-menu-font-icons.vue';
-    import IconMenuDragAndDrop from '@/components/icon/menu/icon-menu-drag-and-drop.vue';
-    import IconMenuTables from '@/components/icon/menu/icon-menu-tables.vue';
-    import IconMenuDatatables from '@/components/icon/menu/icon-menu-datatables.vue';
-    import IconMenuForms from '@/components/icon/menu/icon-menu-forms.vue';
     import IconMenuUsers from '@/components/icon/menu/icon-menu-users.vue';
-    import IconMenuPages from '@/components/icon/menu/icon-menu-pages.vue';
-    import IconMenuAuthentication from '@/components/icon/menu/icon-menu-authentication.vue';
-    import IconMenuDocumentation from '@/components/icon/menu/icon-menu-documentation.vue';
     import IconMenuApps from '@/components/icon/menu/icon-menu-apps.vue';
 
     const store = useAppStore();

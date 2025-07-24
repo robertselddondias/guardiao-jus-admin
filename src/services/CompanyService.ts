@@ -1,5 +1,5 @@
-import CompanyRepository from "@/repositories/CompanyRepository";
-import { CompanyModel } from '@/models/company_model';
+import CompanyRepository from '@/repositories/CompanyRepository';
+import { CompanyModel } from '@/models/CompanyModel';
 
 class CompanyService {
 

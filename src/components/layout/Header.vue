@@ -722,7 +722,6 @@
     import IconBellBing from '@/components/icon/icon-bell-bing.vue';
     import IconUser from '@/components/icon/icon-user.vue';
     import IconMail from '@/components/icon/icon-mail.vue';
-    import IconLockDots from '@/components/icon/icon-lock-dots.vue';
     import IconLogout from '@/components/icon/icon-logout.vue';
     import IconMenuDashboard from '@/components/icon/menu/icon-menu-dashboard.vue';
     import IconCaretDown from '@/components/icon/icon-caret-down.vue';
@@ -734,8 +733,8 @@
     import IconMenuPages from '@/components/icon/menu/icon-menu-pages.vue';
     import IconMenuMore from '@/components/icon/menu/icon-menu-more.vue';
     import AuthService from '@/services/AuthService';
-    import authService, { IUser } from '@/services/AuthService';
-    import { UserModel } from '@/models/user_model';
+    import authService from '@/services/AuthService';
+    import { UserModel } from '@/models/UserModel';
 
     const store = useAppStore();
     const route = useRoute();

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import i18n from '@/i18n';
 import appSetting from '@/app-setting';
-import { UserModel } from '@/models/user_model';
+import { UserModel } from '@/models/UserModel';
 
 export const useAppStore = defineStore('app', {
     state: () => ({
