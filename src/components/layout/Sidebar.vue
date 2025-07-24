@@ -75,7 +75,7 @@
                                     </router-link>
                                 </li>
                                 <li class="nav-item">
-                                    <router-link to="/apps/todolist" class="group" @click="toggleMobileMenu">
+                                    <router-link to="/pagamentos" class="group" @click="toggleMobileMenu">
                                         <div class="flex items-center">
                                             <icon-menu-invoice class="group-hover:!text-primary shrink-0" />
 

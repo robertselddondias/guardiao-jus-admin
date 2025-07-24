@@ -103,7 +103,7 @@
                                             v-else
                                             class="text-primary font-bold text-2xl"
                                         >
-                                            {{ getInitials(customer.name) }}
+                                            {{ getInitials(customer.name!) }}
                                         </span>
                                     </div>
                                 </div>
@@ -121,19 +121,19 @@
                                         </div>
                                         <div>
                                             <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">CPF</label>
-                                            <p class="text-lg">{{ formatCpf(customer.cpf) || '-' }}</p>
+                                            <p class="text-lg">{{ formatCpf(customer.cpf!) || '-' }}</p>
                                         </div>
                                         <div>
                                             <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">Data de Nascimento</label>
-                                            <p class="text-lg">{{ formatDate(customer.birthDate) || '-' }}</p>
+                                            <p class="text-lg">{{ formatDate(customer.birthDate!) || '-' }}</p>
                                         </div>
                                         <div>
                                             <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">Telefone</label>
-                                            <p class="text-lg">{{ formatPhone(customer.phone) || '-' }}</p>
+                                            <p class="text-lg">{{ formatPhone(customer.phone!) || '-' }}</p>
                                         </div>
                                         <div>
                                             <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">País</label>
-                                            <p class="text-lg">{{ getCountryName(customer.countryCode) || '-' }}</p>
+                                            <p class="text-lg">{{ getCountryName(customer.countryCode!) || '-' }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -177,7 +177,7 @@
                             <div v-if="customer.address" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">CEP</label>
-                                    <p class="text-lg">{{ formatCep(customer.address.cep) || '-' }}</p>
+                                    <p class="text-lg">{{ formatCep(customer.address.cep!) || '-' }}</p>
                                 </div>
                                 <div>
                                     <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">Estado</label>
@@ -259,7 +259,7 @@
                                     </div>
                                     <div>
                                         <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">CNPJ</label>
-                                        <p class="text-lg">{{ formatCnpj(companyInfo.cnpj) }}</p>
+                                        <p class="text-lg">{{ formatCnpj(companyInfo.cnpj!) }}</p>
                                     </div>
                                     <div>
                                         <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">Email</label>
@@ -267,7 +267,7 @@
                                     </div>
                                     <div>
                                         <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">Telefone</label>
-                                        <p class="text-lg">{{ formatPhone(companyInfo.phone) }}</p>
+                                        <p class="text-lg">{{ formatPhone(companyInfo.phone!) }}</p>
                                     </div>
                                 </div>
 
@@ -320,7 +320,7 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">Data de Cadastro</label>
-                                        <p class="text-lg">{{ formatDateTime(customer.createdAt) || '-' }}</p>
+                                        <p class="text-lg">{{ formatDateTime(customer.createdAt!) || '-' }}</p>
                                     </div>
                                     <div>
                                         <label class="font-semibold text-sm text-gray-600 dark:text-gray-400">Primeiro Acesso</label>

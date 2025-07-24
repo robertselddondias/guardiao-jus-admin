@@ -15,6 +15,9 @@ const routes: RouteRecordRaw[] = [
     { path: '/company/:id', name: 'companyEdit', component: EmpresaAddView, meta: { requiresAuth: true } },
     { path: '/company/view/:id', name: 'companyView', component: EmpresaViewView, meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: LoginView, meta: { layout: 'auth' } },
+
+    { path: '/pagamentos', name: 'pagamentosView', component: PaymentsListView, meta: { requiresAuth: true } },
+
     {
         path: '/customers',
         children: [

@@ -164,7 +164,7 @@
                                 </div>
                                 <div>
                                     <label for="accountHolder">Titular da Conta</label>
-                                    <input id="accountHolder" type="text" placeholder="Nome do Titular" class="form-input" v-model="bank.accountHolder"/>
+                                    <input id="accountHolder" type="text" placeholder="Nome do Titular" class="form-input" v-model="bank.account"/>
                                 </div>
                             </div>
 
@@ -209,8 +209,8 @@
                                     <input
                                         type="checkbox"
                                         class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
-                                        :checked="company.beneficios?.includes('EMERGENCIA')"
-                                        @change="updateBeneficio('EMERGENCIA', $event.target.checked)"
+                                        :checked="company.beneficios?.includes(BeneficioType.EMERGENCIA)"
+                                        @change="updateBeneficio('EMERGENCIA', $event)"
                                     />
                                     <span class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                                 </label>
@@ -224,8 +224,8 @@
                                     <input
                                         type="checkbox"
                                         class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
-                                        :checked="company.beneficios?.includes('SEM_CARENCIA')"
-                                        @change="updateBeneficio('SEM_CARENCIA', $event.target.checked)"
+                                        :checked="company.beneficios?.includes(BeneficioType.SEM_CARENCIA)"
+                                        @change="updateBeneficio('SEM_CARENCIA', $event)"
                                     />
                                     <span class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                                 </label>
@@ -239,8 +239,8 @@
                                     <input
                                         type="checkbox"
                                         class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
-                                        :checked="company.beneficios?.includes('ATENDIMENTO_24')"
-                                        @change="updateBeneficio('ATENDIMENTO_24', $event.target.checked)"
+                                        :checked="company.beneficios?.includes(BeneficioType.ATENDIMENTO_24)"
+                                        @change="updateBeneficio('ATENDIMENTO_24', $event)"
                                     />
                                     <span class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                                 </label>
@@ -254,8 +254,8 @@
                                     <input
                                         type="checkbox"
                                         class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
-                                        :checked="company.beneficios?.includes('PROCESSOS_DIVERSOS')"
-                                        @change="updateBeneficio('PROCESSOS_DIVERSOS', $event.target.checked)"
+                                        :checked="company.beneficios?.includes(BeneficioType.PROCESSOS_DIVERSOS)"
+                                        @change="updateBeneficio('PROCESSOS_DIVERSOS', $event)"
                                     />
                                     <span class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                                 </label>
@@ -269,8 +269,8 @@
                                     <input
                                         type="checkbox"
                                         class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
-                                        :checked="company.beneficios?.includes('DEPENDENTES')"
-                                        @change="updateBeneficio('DEPENDENTES', $event.target.checked)"
+                                        :checked="company.beneficios?.includes(BeneficioType.DEPENDENTES)"
+                                        @change="updateBeneficio('DEPENDENTES', $event)"
                                     />
                                     <span class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                                 </label>
@@ -284,8 +284,8 @@
                                     <input
                                         type="checkbox"
                                         class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
-                                        :checked="company.beneficios?.includes('WHATSAPP')"
-                                        @change="updateBeneficio('WHATSAPP', $event.target.checked)"
+                                        :checked="company.beneficios?.includes(BeneficioType.WHATSAPP)"
+                                        @change="updateBeneficio('WHATSAPP', $event)"
                                     />
                                     <span class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                                 </label>
@@ -632,7 +632,7 @@
                                             type="checkbox"
                                             class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
                                             :checked="company.isActive !== false"
-                                            @change="toggleCompanyStatus($event.target.checked)"
+                                            @change="toggleCompanyStatus($event)"
                                         />
                                         <span class="bg-[#ebedf2] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-4 before:h-4 before:rounded-full peer-checked:before:left-7 peer-checked:bg-primary before:transition-all before:duration-300"></span>
                                     </label>
@@ -811,7 +811,7 @@
 <script lang="ts" setup>
     import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue';
     import { useMeta } from '@/composables/use-meta';
-    import { onMounted, ref, computed } from 'vue';
+    import { computed, onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
     import { v4 as uuidv4 } from 'uuid';
     import Swal from 'sweetalert2';
@@ -844,6 +844,7 @@
     import IconUserCheck from '@/components/icon/icon-user-check.vue';
     import IconUserX from '@/components/icon/icon-user-x.vue';
     import IconEye from '@/components/icon/icon-eye.vue';
+    import BeneficioType from '@/enums/BeneficioType';
 
     const route = useRoute();
     useMeta({ title: 'Gerenciar Empresa' });
@@ -1200,12 +1201,13 @@
     };
 
     // Métodos de benefícios
-    const updateBeneficio = (beneficio: string, add: boolean) => {
+    const updateBeneficio = (beneficio: string, event: Event) => {
+        const add = event.target as HTMLInputElement;
         if (!company.value.beneficios) {
             company.value.beneficios = [];
         }
 
-        if (add) {
+        if (add.checked) {
             if (!company.value.beneficios.includes(beneficio as any)) {
                 company.value.beneficios.push(beneficio as any);
             }
@@ -1215,7 +1217,9 @@
     };
 
     // Método para ativar/desativar empresa
-    const toggleCompanyStatus = async (isActive: boolean) => {
+    const toggleCompanyStatus = async (event: Event) => {
+        const target = event.target as HTMLInputElement;
+        const isActive = target.checked;
         try {
             const action = isActive ? 'ativar' : 'desativar';
 

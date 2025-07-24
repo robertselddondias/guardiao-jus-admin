@@ -130,24 +130,6 @@
                             </div>
                         </template>
 
-                        <template #beneficios="data">
-                            <div class="flex flex-wrap gap-1">
-                            <span
-                                v-for="beneficio in (data.value.beneficios || []).slice(0, 3)"
-                                :key="beneficio"
-                                class="badge badge-primary text-xs"
-                            >
-                                {{ getBeneficioLabel(beneficio) }}
-                            </span>
-                                <span
-                                    v-if="(data.value.beneficios || []).length > 3"
-                                    class="text-xs text-gray-500"
-                                >
-                                +{{ (data.value.beneficios || []).length - 3 }}
-                            </span>
-                            </div>
-                        </template>
-
                         <template #clientCount="data">
                             <div class="text-center">
                             <span class="badge" :class="getClientCountClass(getClientCount(data.value.id))">
