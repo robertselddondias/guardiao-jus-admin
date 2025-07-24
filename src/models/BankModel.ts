@@ -8,11 +8,11 @@ export class BankModel {
     payDay?: string;
 
     constructor(code?: string, name?: string, agency?: string, account?: string, payDay?: string) {
-        this.code = code;
-        this.name = name;
-        this.agency = agency;
-        this.account = account;
-        this.payDay = payDay;
+        this.code = code ?? '';
+        this.name = name ?? '';
+        this.agency = agency ?? '';
+        this.account = account ?? '';
+        this.payDay = payDay ?? '';
     }
 
     toMap(): { [key: string]: any } {

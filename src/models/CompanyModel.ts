@@ -1,3 +1,5 @@
+// src/models/CompanyModel.ts
+
 import BeneficioType from '@/enums/BeneficioType';
 import { BankModel } from '@/models/BankModel';
 
@@ -15,6 +17,7 @@ export class CompanyModel {
     whatsapp?: string;
     monthlyValue?: number;
     beneficios?: BeneficioType[] = [];
+    isActive?: boolean = true; // Novo campo para controlar status da empresa
 
     bank?: BankModel;
 
@@ -33,6 +36,7 @@ export class CompanyModel {
         whatsapp?: string,
         monthlyValue?: number,
         bank?: BankModel,
+        isActive?: boolean
     ) {
         this.id = id;
         this.name = name;
@@ -48,6 +52,7 @@ export class CompanyModel {
         this.whatsapp = whatsapp;
         this.monthlyValue = monthlyValue;
         this.bank = bank;
+        this.isActive = isActive ?? true; // Default: empresa ativa
     }
 
     toMap(): { [key: string]: any } {
@@ -66,6 +71,7 @@ export class CompanyModel {
             whatsapp: this.whatsapp,
             monthlyValue: this.monthlyValue,
             bank: this.bank?.toMap(),
+            isActive: this.isActive,
         };
     }
 
@@ -84,7 +90,8 @@ export class CompanyModel {
             map['phoneEmergencia'],
             map['whatsapp'],
             map['monthlyValue'],
-            BankModel.fromMap(map['bank'])
+            map['bank'] ? BankModel.fromMap(map['bank']) : undefined,
+            map['isActive'] ?? true // Default: empresa ativa se não especificado
         );
     }
 
@@ -96,5 +103,25 @@ export class CompanyModel {
         return beneficios
             .filter(item => Object.values(BeneficioType).includes(item as BeneficioType))
             .map(item => item as BeneficioType);
+    }
+
+    // Método para verificar se a empresa está ativa
+    isCompanyActive(): boolean {
+        return this.isActive !== false;
+    }
+
+    // Método para ativar empresa
+    activate(): void {
+        this.isActive = true;
+    }
+
+    // Método para desativar empresa
+    deactivate(): void {
+        this.isActive = false;
+    }
+
+    // Método para alternar status
+    toggleStatus(): void {
+        this.isActive = !this.isActive;
     }
 }

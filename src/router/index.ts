@@ -6,12 +6,14 @@ import LoginView from '@/views/auth/LoginView.vue';
 import EmpresaListView from '@/views/empresa/EmpresaListView.vue';
 import { useAppStore } from '@/stores';
 import EmpresaAddView from '@/views/empresa/EmpresaAddView.vue';
+import EmpresaViewView from '@/views/empresa/EmpresaViewView.vue';
 
 const routes: RouteRecordRaw[] = [
     { path: '/', name: 'home', component: HomeView, meta: { requiresAuth: true } },
     { path: '/company/list', name: 'companyList', component: EmpresaListView, meta: { requiresAuth: true } },
     { path: '/company/add', name: 'companyAdd', component: EmpresaAddView, meta: { requiresAuth: true } },
     { path: '/company/:id', name: 'companyEdit', component: EmpresaAddView, meta: { requiresAuth: true } },
+    { path: '/company/view/:id', name: 'companyView', component: EmpresaViewView, meta: { requiresAuth: true } },
     { path: '/login', name: 'login', component: LoginView, meta: { layout: 'auth' } },
     {
         path: '/customers',
