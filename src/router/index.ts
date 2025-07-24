@@ -7,6 +7,7 @@ import EmpresaListView from '@/views/empresa/EmpresaListView.vue';
 import { useAppStore } from '@/stores';
 import EmpresaAddView from '@/views/empresa/EmpresaAddView.vue';
 import EmpresaViewView from '@/views/empresa/EmpresaViewView.vue';
+import PaymentsListView from '@/views/pagamento/PaymentsListView.vue';
 
 const routes: RouteRecordRaw[] = [
     { path: '/', name: 'home', component: HomeView, meta: { requiresAuth: true } },
