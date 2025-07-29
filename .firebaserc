@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "guardiao-jus"
+  },
+  "targets": {
+    "guardiao-jus": {
+      "hosting": {
+        "admin": [
+          "admin-guardiao-jus"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -203,7 +203,10 @@ class UserAdvRepository {
             const querySnapshot = await getDocs(usersAdvQuery);
             const usersAdv: UserAdvModel[] = [];
 
+            console.info(`USER: ${querySnapshot.docs[0].data()}`);
+
             querySnapshot.forEach((doc) => {
+
                 const userAdv = UserAdvModel.fromMap(doc.data());
                 usersAdv.push(userAdv);
             });
@@ -215,6 +218,7 @@ class UserAdvRepository {
             } else {
                 throw new Error('Erro desconhecido ao buscar usuários advogados por empresa');
             }
+            console.info(`ERRO CONSULTA: ${JSON.stringify(error)}`);
         }
     }
 

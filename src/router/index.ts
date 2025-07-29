@@ -8,6 +8,8 @@ import { useAppStore } from '@/stores';
 import EmpresaAddView from '@/views/empresa/EmpresaAddView.vue';
 import EmpresaViewView from '@/views/empresa/EmpresaViewView.vue';
 import PaymentsListView from '@/views/pagamento/PaymentsListView.vue';
+import InformativoListView from '@/views/informativo/InformativoListView.vue';
+import InformativoCreateView from '@/views/informativo/InformativoCreateView.vue';
 
 const routes: RouteRecordRaw[] = [
     { path: '/', name: 'home', component: HomeView, meta: { requiresAuth: true } },
@@ -18,6 +20,17 @@ const routes: RouteRecordRaw[] = [
     { path: '/login', name: 'login', component: LoginView, meta: { layout: 'auth' } },
 
     { path: '/pagamentos', name: 'pagamentosView', component: PaymentsListView, meta: { requiresAuth: true } },
+
+    {
+        path: '/informativos',
+        component: InformativoListView,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: '/informativos/criar',
+        component: InformativoCreateView,
+        meta: { requiresAuth: true },
+    },
 
     {
         path: '/customers',

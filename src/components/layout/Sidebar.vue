@@ -102,7 +102,7 @@
                         </li>
 
                         <li class="menu nav-item">
-                            <router-link to="/widgets" class="nav-link group" @click="toggleMobileMenu">
+                            <router-link to="/informativos" class="nav-link group" @click="toggleMobileMenu">
                                 <div class="flex items-center">
                                     <icon-menu-widgets class="group-hover:!text-primary shrink-0" />
 

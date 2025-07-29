@@ -917,11 +917,13 @@
     };
 
     const loadAdvogados = async () => {
+        console.info(`ID ----- ${company.value.id}`);
         if (!company.value.id) return;
 
         isLoadingAdvogados.value = true;
         try {
             const advogados = await UserAdvService.getUsersAdvByCompany(company.value.id);
+            console.info(`ADVOGADOS: ----- ${JSON.stringify(advogados)}`);
             companyAdvogados.value = advogados;
         } catch (error) {
             console.error('Erro ao carregar advogados:', error);
