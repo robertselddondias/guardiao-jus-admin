@@ -1,29 +1,116 @@
 <template>
-    <div class="space-y-6">
+    <div>
+        <!-- Breadcrumb -->
+        <ul class="flex space-x-2 rtl:space-x-reverse">
+            <li>
+                <a href="javascript:" class="text-primary hover:underline">Dashboard</a>
+            </li>
+            <li class="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
+                <span>Informativos</span>
+            </li>
+        </ul>
+
         <!-- Notifications -->
-        <div v-if="notifications.length > 0" class="fixed top-4 right-4 z-50 space-y-2">
+        <div v-if="notifications.length > 0" class="mb-4 space-y-2">
             <div
                 v-for="notification in notifications"
                 :key="notification.id"
-                :class="`alert alert-${notification.type} shadow-lg flex items-center justify-between max-w-sm`"
+                :class="`alert alert-${notification.type}`"
             >
-                <div class="flex items-center">
-                    <svg v-if="notification.type === 'success'" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <svg v-else-if="notification.type === 'error'" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                    </svg>
-                    <svg v-else class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="text-sm">{{ notification.message }}</span>
-                </div>
-                <button @click="removeNotification(notification.id)" class="ml-2">
+                <span>{{ notification.message }}</span>
+                <button @click="removeNotification(notification.id)" class="ml-auto">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
                     </svg>
                 </button>
+            </div>
+        </div>
+
+        <!-- Actions Bar -->
+        <div class="pt-5">
+            <div class="flex items-center justify-between mb-5">
+                <h5 class="font-semibold text-lg dark:text-white-light">Lista de Informativos</h5>
+                <div class="flex items-center gap-3">
+                    <!-- Refresh Button -->
+                    <button
+                        @click="refreshInformativos"
+                        :disabled="isLoading"
+                        class="btn btn-outline-secondary"
+                        title="Atualizar Lista"
+                    >
+                        <svg class="w-4 h-4" :class="{ 'animate-spin': isLoading }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+
+                    <!-- Add Button -->
+                    <router-link to="/informativos/criar" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
+                            <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Novo Informativo
+                    </router-link>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="panel">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-lg font-bold">{{ statistics.total }}</div>
+                        <div class="text-sm text-gray-500">Total</div>
+                    </div>
+                    <div class="bg-primary/10 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-lg font-bold text-success">{{ statistics.ativos }}</div>
+                        <div class="text-sm text-gray-500">Ativos</div>
+                    </div>
+                    <div class="bg-success/10 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-success" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-lg font-bold text-warning">{{ statistics.altaPrioridade }}</div>
+                        <div class="text-sm text-gray-500">Alta Prioridade</div>
+                    </div>
+                    <div class="bg-warning/10 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-warning" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-lg font-bold text-danger">{{ statistics.expirados }}</div>
+                        <div class="text-sm text-gray-500">Expirados</div>
+                    </div>
+                    <div class="bg-danger/10 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-danger" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -94,77 +181,9 @@
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
                             >
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
                         </div>
-
-                        <!-- Add Button -->
-                        <router-link to="/informativos/criar" class="btn btn-primary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
-                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Novo Informativo
-                        </router-link>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="panel">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="text-lg font-bold">{{ statistics.total }}</div>
-                        <div class="text-sm text-gray-500">Total</div>
-                    </div>
-                    <div class="bg-primary/10 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
-                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="text-lg font-bold text-success">{{ statistics.ativos }}</div>
-                        <div class="text-sm text-gray-500">Ativos</div>
-                    </div>
-                    <div class="bg-success/10 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-success" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="text-lg font-bold text-warning">{{ statistics.altaPrioridade }}</div>
-                        <div class="text-sm text-gray-500">Alta Prioridade</div>
-                    </div>
-                    <div class="bg-warning/10 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-warning" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="text-lg font-bold text-danger">{{ statistics.expirados }}</div>
-                        <div class="text-sm text-gray-500">Expirados</div>
-                    </div>
-                    <div class="bg-danger/10 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-danger" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                        </svg>
                     </div>
                 </div>
             </div>
@@ -210,8 +229,7 @@
                 <div
                     v-for="informativo in filteredInformativos"
                     :key="informativo.id"
-                    class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all duration-200 cursor-pointer"
-                    @click="viewInformativo(informativo)"
+                    class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all duration-200"
                 >
                     <div class="flex items-start justify-between">
                         <!-- Content -->
@@ -225,25 +243,16 @@
                                 </span>
 
                                 <!-- Category Badge -->
-                                <span
-                                    :class="`badge badge-${getCategoriaColor(informativo.categoria)}`"
-                                >
+                                <span :class="`badge badge-${getCategoriaColor(informativo.categoria)}`">
                                     {{ informativo.categoria }}
                                 </span>
 
                                 <!-- Priority Badge -->
-                                <span
-                                    :class="`badge badge-${getPrioridadeColor(informativo.prioridade)}`"
-                                >
-                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path v-if="informativo.prioridade === 1" fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z" clip-rule="evenodd"/>
-                                        <path v-else-if="informativo.prioridade === 2" fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                                        <path v-else fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
-                                    </svg>
-                                    {{ informativo.prioridadeString }}
+                                <span :class="`badge badge-${getPrioridadeColor(informativo.prioridade)}`">
+                                    {{ informativo.prioridade === 1 ? 'Alta' : informativo.prioridade === 2 ? 'Média' : 'Baixa' }}
                                 </span>
 
-                                <!-- Validity Badge -->
+                                <!-- Invalid Badge -->
                                 <span
                                     v-if="!informativo.isValido"
                                     class="badge badge-danger"
@@ -321,185 +330,187 @@
                             />
                         </div>
 
-                        <!-- Actions -->
+                        <!-- Actions - DROPDOWN CORRIGIDO -->
                         <div class="ml-4 flex-shrink-0">
-                            <div class="dropdown">
-                                <Popper :arrow="false" offsetDistance="0" placement="bottom-end">
-                                    <button
-                                        type="button"
-                                        class="btn btn-sm btn-outline-secondary"
-                                        @click.stop
-                                        :disabled="Object.values(loadingActions).some(loading => loading)"
-                                    >
-                                        <svg v-if="!Object.values(loadingActions).some(loading => loading)" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                                        </svg>
-                                        <svg v-else class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                    </button>
-                                    <template #content="{ close }">
-                                        <ul @click="close()">
-                                            <!-- Visualizar -->
-                                            <li>
-                                                <button @click="viewInformativo(informativo)" type="button">
-                                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                    Visualizar
-                                                </button>
-                                            </li>
+                            <div class="dropdown relative">
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    @click.stop="toggleDropdown(informativo.id)"
+                                    :disabled="Object.values(loadingActions).some(loading => loading)"
+                                >
+                                    <svg v-if="!Object.values(loadingActions).some(loading => loading)" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                                    </svg>
+                                    <svg v-else class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </button>
 
-                                            <!-- Editar -->
-                                            <li>
-                                                <button @click="editInformativo(informativo)" type="button">
-                                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
-                                                    </svg>
-                                                    Editar
-                                                </button>
-                                            </li>
+                                <!-- Dropdown menu -->
+                                <div
+                                    v-show="activeDropdown === informativo.id"
+                                    class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border border-gray-200 dark:border-gray-700"
+                                    @click.stop="closeDropdown"
+                                >
+                                    <ul class="py-1">
+                                        <!-- Visualizar -->
+                                        <li>
+                                            <button @click="viewInformativo(informativo)" type="button" class="dropdown-item">
+                                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Visualizar
+                                            </button>
+                                        </li>
 
-                                            <!-- Duplicar -->
-                                            <li>
-                                                <button @click="duplicateInformativo(informativo)" type="button">
-                                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z"/>
-                                                        <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z"/>
-                                                    </svg>
-                                                    Duplicar
-                                                </button>
-                                            </li>
+                                        <!-- Editar -->
+                                        <li>
+                                            <button @click="editInformativo(informativo)" type="button" class="dropdown-item">
+                                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                                </svg>
+                                                Editar
+                                            </button>
+                                        </li>
 
-                                            <li>
-                                                <hr class="my-1 border-gray-200 dark:border-gray-700" />
-                                            </li>
+                                        <!-- Duplicar -->
+                                        <li>
+                                            <button @click="duplicateInformativo(informativo)" type="button" class="dropdown-item">
+                                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z"/>
+                                                    <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z"/>
+                                                </svg>
+                                                Duplicar
+                                            </button>
+                                        </li>
 
-                                            <!-- Ativar/Desativar -->
-                                            <li>
-                                                <button
-                                                    @click="toggleStatus(informativo)"
-                                                    type="button"
-                                                    :class="informativo.ativo ? 'text-warning' : 'text-success'"
-                                                    :disabled="isActionLoading('toggle', informativo.id || '')"
-                                                >
-                                                    <svg v-if="!isActionLoading('toggle', informativo.id || '') && informativo.ativo" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                    <svg v-else-if="!isActionLoading('toggle', informativo.id || '') && !informativo.ativo" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                    <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                    </svg>
-                                                    {{ informativo.ativo ? 'Desativar' : 'Ativar' }}
-                                                </button>
-                                            </li>
+                                        <li><hr class="my-1 border-gray-200 dark:border-gray-700" /></li>
 
-                                            <li>
-                                                <hr class="my-1 border-gray-200 dark:border-gray-700" />
-                                            </li>
+                                        <!-- Ativar/Desativar -->
+                                        <li>
+                                            <button
+                                                @click="toggleStatus(informativo)"
+                                                type="button"
+                                                :class="informativo.ativo ? 'text-warning' : 'text-success'"
+                                                class="dropdown-item"
+                                                :disabled="isActionLoading('toggle', informativo.id || '')"
+                                            >
+                                                <svg v-if="!isActionLoading('toggle', informativo.id || '') && informativo.ativo" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <svg v-else-if="!isActionLoading('toggle', informativo.id || '') && !informativo.ativo" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                {{ informativo.ativo ? 'Desativar' : 'Ativar' }}
+                                            </button>
+                                        </li>
 
-                                            <!-- Prioridades -->
-                                            <li>
-                                                <button
-                                                    @click="changePriority(informativo, 1)"
-                                                    type="button"
-                                                    :class="informativo.prioridade === 1 ? 'text-danger font-bold' : ''"
-                                                    :disabled="isActionLoading('priority', informativo.id || '')"
-                                                >
-                                                    <svg v-if="!isActionLoading('priority', informativo.id || '')" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                    <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                    </svg>
-                                                    Prioridade Alta
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button
-                                                    @click="changePriority(informativo, 2)"
-                                                    type="button"
-                                                    :class="informativo.prioridade === 2 ? 'text-warning font-bold' : ''"
-                                                    :disabled="isActionLoading('priority', informativo.id || '')"
-                                                >
-                                                    <svg v-if="!isActionLoading('priority', informativo.id || '')" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                    <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                    </svg>
-                                                    Prioridade Média
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button
-                                                    @click="changePriority(informativo, 3)"
-                                                    type="button"
-                                                    :class="informativo.prioridade === 3 ? 'text-success font-bold' : ''"
-                                                    :disabled="isActionLoading('priority', informativo.id || '')"
-                                                >
-                                                    <svg v-if="!isActionLoading('priority', informativo.id || '')" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                    <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                    </svg>
-                                                    Prioridade Baixa
-                                                </button>
-                                            </li>
+                                        <li><hr class="my-1 border-gray-200 dark:border-gray-700" /></li>
 
-                                            <li>
-                                                <hr class="my-1 border-gray-200 dark:border-gray-700" />
-                                            </li>
+                                        <!-- Prioridades -->
+                                        <li>
+                                            <button
+                                                @click="changePriority(informativo, 1)"
+                                                type="button"
+                                                :class="informativo.prioridade === 1 ? 'text-danger font-bold' : ''"
+                                                class="dropdown-item"
+                                                :disabled="isActionLoading('priority', informativo.id || '')"
+                                            >
+                                                <svg v-if="!isActionLoading('priority', informativo.id || '')" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Prioridade Alta
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                @click="changePriority(informativo, 2)"
+                                                type="button"
+                                                :class="informativo.prioridade === 2 ? 'text-warning font-bold' : ''"
+                                                class="dropdown-item"
+                                                :disabled="isActionLoading('priority', informativo.id || '')"
+                                            >
+                                                <svg v-if="!isActionLoading('priority', informativo.id || '')" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Prioridade Média
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                @click="changePriority(informativo, 3)"
+                                                type="button"
+                                                :class="informativo.prioridade === 3 ? 'text-success font-bold' : ''"
+                                                class="dropdown-item"
+                                                :disabled="isActionLoading('priority', informativo.id || '')"
+                                            >
+                                                <svg v-if="!isActionLoading('priority', informativo.id || '')" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Prioridade Baixa
+                                            </button>
+                                        </li>
 
-                                            <!-- Excluir -->
-                                            <li>
-                                                <button
-                                                    @click="confirmDelete(informativo)"
-                                                    type="button"
-                                                    class="text-danger"
-                                                    :disabled="isActionLoading('delete', informativo.id || '')"
-                                                >
-                                                    <svg v-if="!isActionLoading('delete', informativo.id || '')" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                                    </svg>
-                                                    <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                    </svg>
-                                                    Excluir
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </template>
-                                </Popper>
+                                        <li><hr class="my-1 border-gray-200 dark:border-gray-700" /></li>
+
+                                        <!-- Excluir -->
+                                        <li>
+                                            <button
+                                                @click="confirmDelete(informativo)"
+                                                type="button"
+                                                class="dropdown-item text-danger"
+                                                :disabled="isActionLoading('delete', informativo.id || '')"
+                                            >
+                                                <svg v-if="!isActionLoading('delete', informativo.id || '')" class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Excluir
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Load More Button -->
-                <div v-if="hasMore && !isLoading" class="text-center py-6">
-                    <button
-                        @click="loadMoreInformativos"
-                        class="btn btn-outline-primary"
-                        :disabled="isLoading"
-                    >
-                        <svg v-if="isLoading" class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        {{ isLoading ? 'Carregando...' : 'Carregar Mais' }}
-                    </button>
-                </div>
+            <!-- Load More Button -->
+            <div v-if="hasMore && filteredInformativos.length > 0" class="flex justify-center mt-6">
+                <button
+                    @click="loadMoreInformativos"
+                    :disabled="isLoading"
+                    class="btn btn-outline-primary"
+                >
+                    <svg v-if="isLoading" class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    {{ isLoading ? 'Carregando...' : 'Carregar Mais' }}
+                </button>
             </div>
         </div>
 
@@ -627,6 +638,9 @@
     const selectedCategory = ref('');
     const currentFilter = ref('all');
 
+    // Estado do dropdown - CORREÇÃO PRINCIPAL
+    const activeDropdown = ref<string | null>(null);
+
     // Loading states para ações individuais
     const loadingActions = ref<{ [key: string]: boolean }>({});
 
@@ -670,7 +684,16 @@
         return filtered;
     });
 
-    // Methods
+    // Methods - MÉTODOS DE DROPDOWN CORRIGIDOS
+    const toggleDropdown = (id: string | undefined) => {
+        if (!id) return;
+        activeDropdown.value = activeDropdown.value === id ? null : id;
+    };
+
+    const closeDropdown = () => {
+        activeDropdown.value = null;
+    };
+
     const filterByStatus = (status: string) => {
         currentFilter.value = status;
 
@@ -761,17 +784,10 @@
         loadingActions.value[actionKey] = true;
 
         try {
-            // Criar uma cópia do informativo
             loadInformativoToForm(informativo);
             const novoInformativo = createInformativoFromForm();
-
-            // Alterar título para indicar que é cópia
             novoInformativo.titulo = `[CÓPIA] ${novoInformativo.titulo}`;
-
-            // Remover ID para criar novo
             novoInformativo.id = undefined;
-
-            // Definir nova data de publicação
             novoInformativo.dataPublicacao = new Date();
 
             const result = await createInformativo();
@@ -790,7 +806,6 @@
 
     const confirmDelete = (informativo: InformativoModel) => {
         if (!informativo.id) return;
-
         deleteModal.value.informativo = informativo;
         deleteModal.value.show = true;
     };
@@ -801,13 +816,10 @@
         deleteModal.value.loading = true;
 
         try {
-            const success = await deleteInformativo(deleteModal.value.informativo.id);
-            if (success) {
-                showNotification('success', `Informativo "${deleteModal.value.informativo.titulo}" excluído com sucesso`);
-                closeDeleteModal();
-            } else {
-                showNotification('error', 'Erro ao excluir informativo');
-            }
+            await deleteInformativo(deleteModal.value.informativo.id);
+            showNotification('success', 'Informativo excluído com sucesso');
+            closeDeleteModal();
+            refreshInformativos();
         } catch (error: any) {
             showNotification('error', error.message || 'Erro ao excluir informativo');
         } finally {
@@ -821,12 +833,11 @@
         deleteModal.value.loading = false;
     };
 
-    // Sistema de notificações
+    // Notification helpers
     const showNotification = (type: 'success' | 'error' | 'warning', message: string) => {
         const id = Date.now().toString();
         notifications.value.push({ id, type, message });
 
-        // Remover notificação após 5 segundos
         setTimeout(() => {
             removeNotification(id);
         }, 5000);
@@ -839,6 +850,7 @@
         }
     };
 
+    // Utility methods
     const isActionLoading = (action: string, id: string): boolean => {
         return loadingActions.value[`${action}_${id}`] || false;
     };
@@ -849,15 +861,19 @@
     };
 
     // Lifecycle
-    onMounted(() => {
-        fetchInformativos(true);
+    onMounted(async () => {
+        await fetchInformativos(true);
+
+        // Adicionar listener para fechar dropdown ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!e.target || !(e.target as Element).closest('.dropdown')) {
+                closeDropdown();
+            }
+        });
     });
 
-    // Watch for route changes to refresh data
-    watch(() => router.currentRoute.value.path, (newPath) => {
-        if (newPath === '/informativos') {
-            refreshInformativos();
-        }
+    watch(searchTerm, () => {
+        // Could implement debounced search here
     });
 </script>
 
@@ -886,18 +902,19 @@
 
     .dropdown ul {
         @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg py-1 min-w-48;
+        z-index: 9999 !important;
     }
 
-    .dropdown li button {
-        @apply w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center;
+    .dropdown-item {
+        @apply w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center transition-colors duration-150;
     }
 
-    .dropdown li button:disabled {
+    .dropdown-item:disabled {
         @apply opacity-50 cursor-not-allowed;
     }
 
     .alert {
-        @apply px-4 py-3 rounded-md transition-all duration-300 ease-in-out;
+        @apply px-4 py-3 rounded-md transition-all duration-300 ease-in-out flex items-center justify-between;
         animation: slideInRight 0.3s ease-out;
     }
 
@@ -940,75 +957,15 @@
         @apply bg-blue-100 text-blue-800 border border-blue-200;
     }
 
-    .badge-danger {
-        @apply bg-red-100 text-red-800 border border-red-200;
-    }
-
     .badge-warning {
         @apply bg-yellow-100 text-yellow-800 border border-yellow-200;
     }
 
+    .badge-danger {
+        @apply bg-red-100 text-red-800 border border-red-200;
+    }
+
     .badge-primary {
-        @apply bg-indigo-100 text-indigo-800 border border-indigo-200;
-    }
-
-    .form-select {
-        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white;
-    }
-
-    .form-input {
-        @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white;
-    }
-
-    .btn {
-        @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200;
-    }
-
-    .btn-primary {
-        @apply text-white bg-blue-600 border-blue-600 hover:bg-blue-700 focus:ring-blue-500;
-    }
-
-    .btn-outline-primary {
-        @apply text-blue-600 bg-transparent border-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500;
-    }
-
-    .btn-outline-secondary {
-        @apply text-gray-700 bg-transparent border-gray-300 hover:bg-gray-50 focus:ring-gray-500 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700;
-    }
-
-    .btn-sm {
-        @apply px-3 py-1.5 text-xs;
-    }
-
-    .text-success {
-        @apply text-green-600;
-    }
-
-    .text-danger {
-        @apply text-red-600;
-    }
-
-    .text-warning {
-        @apply text-yellow-600;
-    }
-
-    .text-primary {
-        @apply text-blue-600;
-    }
-
-    .bg-success\/10 {
-        @apply bg-green-100;
-    }
-
-    .bg-danger\/10 {
-        @apply bg-red-100;
-    }
-
-    .bg-warning\/10 {
-        @apply bg-yellow-100;
-    }
-
-    .bg-primary\/10 {
-        @apply bg-blue-100;
+        @apply bg-blue-100 text-blue-800 border border-blue-200;
     }
 </style>

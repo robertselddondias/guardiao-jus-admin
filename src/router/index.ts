@@ -1,3 +1,5 @@
+// src/router/index.ts - Rotas atualizadas com sistema completo de informativos
+
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import appSetting from '@/app-setting';
@@ -10,6 +12,7 @@ import EmpresaViewView from '@/views/empresa/EmpresaViewView.vue';
 import PaymentsListView from '@/views/pagamento/PaymentsListView.vue';
 import InformativoListView from '@/views/informativo/InformativoListView.vue';
 import InformativoCreateView from '@/views/informativo/InformativoCreateView.vue';
+import InformativoDetailsView from '@/views/informativo/InformativoDetailsView.vue';
 
 const routes: RouteRecordRaw[] = [
     { path: '/', name: 'home', component: HomeView, meta: { requiresAuth: true } },
@@ -20,18 +23,96 @@ const routes: RouteRecordRaw[] = [
     { path: '/login', name: 'login', component: LoginView, meta: { layout: 'auth' } },
 
     { path: '/pagamentos', name: 'pagamentosView', component: PaymentsListView, meta: { requiresAuth: true } },
-
     {
         path: '/informativos',
-        component: InformativoListView,
-        meta: { requiresAuth: true },
-    },
-    {
-        path: '/informativos/criar',
-        component: InformativoCreateView,
-        meta: { requiresAuth: true },
+        children: [
+            {
+                path: '',
+                name: 'informativos-list',
+                component: InformativoListView,
+                meta: {
+                    title: 'Lista de Informativos',
+                    requiresAuth: true,
+                    breadcrumb: [
+                        { name: 'Dashboard', path: '/' },
+                        { name: 'Informativos', path: '/informativos' }
+                    ]
+                },
+            },
+            {
+                path: 'criar',
+                name: 'informativos-create',
+                component: InformativoCreateView,
+                meta: {
+                    title: 'Criar Informativo',
+                    requiresAuth: true,
+                    breadcrumb: [
+                        { name: 'Dashboard', path: '/' },
+                        { name: 'Informativos', path: '/informativos' },
+                        { name: 'Criar', path: '/informativos/criar' }
+                    ]
+                },
+            },
+            {
+                path: ':id',
+                name: 'informativos-view',
+                component: InformativoDetailsView,
+                meta: {
+                    title: 'Visualizar Informativo',
+                    requiresAuth: true,
+                    breadcrumb: [
+                        { name: 'Dashboard', path: '/' },
+                        { name: 'Informativos', path: '/informativos' },
+                        { name: 'Visualizar', path: '/informativos/:id' }
+                    ]
+                },
+            },
+            {
+                path: ':id/editar',
+                name: 'informativos-edit',
+                component: InformativoCreateView,
+                meta: {
+                    title: 'Editar Informativo',
+                    requiresAuth: true,
+                    breadcrumb: [
+                        { name: 'Dashboard', path: '/' },
+                        { name: 'Informativos', path: '/informativos' },
+                        { name: 'Editar', path: '/informativos/:id/editar' }
+                    ]
+                },
+            },
+            // {
+            //     path: 'relatorios',
+            //     name: 'informativos-reports',
+            //     component: InformativoReportsView,
+            //     meta: {
+            //         title: 'Relatórios de Informativos',
+            //         requiresAuth: true,
+            //         breadcrumb: [
+            //             { name: 'Dashboard', path: '/' },
+            //             { name: 'Informativos', path: '/informativos' },
+            //             { name: 'Relatórios', path: '/informativos/relatorios' }
+            //         ]
+            //     },
+            // },
+            // {
+            //     path: 'busca-avancada',
+            //     name: 'informativos-advanced-search',
+            //     component: () => import('@/views/informativo/InformativoAdvancedSearchView.vue'),
+            //     meta: {
+            //         title: 'Busca Avançada',
+            //         requiresAuth: true,
+            //         breadcrumb: [
+            //             { name: 'Dashboard', path: '/' },
+            //             { name: 'Informativos', path: '/informativos' },
+            //             { name: 'Busca Avançada', path: '/informativos/busca-avancada' }
+            //         ]
+            //     },
+            // }
+        ]
     },
 
+    // =================== ROTAS DE CUSTOMERS ===================
     {
         path: '/customers',
         children: [
@@ -41,18 +122,6 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/customer/CustomerListView.vue'),
                 meta: { title: 'Lista de Clientes', requiresAuth: true },
             },
-            // {
-            //     path: 'add',
-            //     name: 'customers-add',
-            //     component: () => import('@/views/customer/CustomerAddView.vue'),
-            //     meta: { title: 'Adicionar Cliente', requiresAuth: true },
-            // },
-            // {
-            //     path: 'edit/:id',
-            //     name: 'customers-edit',
-            //     component: () => import('@/views/customer/CustomerEditView.vue'),
-            //     meta: { title: 'Editar Cliente', requiresAuth: true },
-            // },
             {
                 path: 'view/:id',
                 name: 'customers-view',
@@ -62,7 +131,6 @@ const routes: RouteRecordRaw[] = [
         ]
     }
 ];
-
 
 const router = createRouter({
     history: createWebHistory(),
@@ -95,6 +163,13 @@ router.beforeEach((to, from, next) => {
         store.setMainLayout('auth');
     } else {
         store.setMainLayout('app');
+    }
+
+    // Set page title
+    if (to.meta.title) {
+        document.title = `${to.meta.title} - Guardião Jus`;
+    } else {
+        document.title = 'Guardião Jus';
     }
 });
 
