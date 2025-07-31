@@ -13,9 +13,10 @@ import PaymentsListView from '@/views/pagamento/PaymentsListView.vue';
 import InformativoListView from '@/views/informativo/InformativoListView.vue';
 import InformativoCreateView from '@/views/informativo/InformativoCreateView.vue';
 import InformativoDetailsView from '@/views/informativo/InformativoDetailsView.vue';
+import DashboardView from '@/views/dashboard/DashboardView.vue';
 
 const routes: RouteRecordRaw[] = [
-    { path: '/', name: 'home', component: HomeView, meta: { requiresAuth: true } },
+    { path: '/', name: 'home', component: DashboardView, meta: { requiresAuth: true } },
     { path: '/company/list', name: 'companyList', component: EmpresaListView, meta: { requiresAuth: true } },
     { path: '/company/add', name: 'companyAdd', component: EmpresaAddView, meta: { requiresAuth: true } },
     { path: '/company/:id', name: 'companyEdit', component: EmpresaAddView, meta: { requiresAuth: true } },
